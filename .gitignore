@@ -1,0 +1,19 @@
+# OS artifacts
+.DS_Store
+
+# Packed distribution (built by build.py --pack)
+dist/
+
+# Editor / tooling caches
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+
+# Runtime state written by scripts/zoe-monitor.sh, zoe-watchd.sh and the
+# documented `.zoe/` convention. These are per-machine observations, never
+# skill content: committing them would ship someone else's cursor.
+.zoe/
+zoe-cursor.txt
+zoe-events.jsonl
+zoe-watch.err

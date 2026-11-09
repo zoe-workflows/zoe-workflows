@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "project_id": "example-multi",
+  "repo": "/absolute/path/to/repo",
+  "base_ref": "HEAD",
+  "backend": "local-process",
+  "network": "none",
+  "default_agent_profile": "cb-primary",
+  "agent_profiles": {
+    "cb-primary": {
+      "adapter": "codebuddy",
+      "backend": "codebuddy-cli",
+      "expected_version": "REPLACE_WITH_EXACT_CLI_VERSION",
+      "permission_profile": "isolated-edit",
+      "require_permission_binding": true,
+      "credential_refs": ["model-codebuddy"],
+      "network_profile": "none",
+      "model": "REPLACE_WITH_PRIMARY_MODEL_ID",
+      "cost_class": "standard",
+      "description": "用途：需求明确、修改集中、验证直接的任务。依据：尚未验证。"
+    },
+    "cb-review": {
+      "adapter": "codebuddy",
+      "backend": "codebuddy-cli",
+      "expected_version": "REPLACE_WITH_EXACT_CLI_VERSION",
+      "permission_profile": "isolated-edit",
+      "require_permission_binding": true,
+      "credential_refs": ["model-codebuddy"],
+      "network_profile": "none",
+      "model": "REPLACE_WITH_REVIEW_MODEL_ID",
+      "model_aliases": ["REPLACE_WITH_REPORTED_MODEL_ID"],
+      "cost_class": "standard",
+      "description": "用途：状态机、并发、一致性等需要跨模块推理的评审。真实成本为高端档；此处登记 standard 是保守示例。要升 premium（默认开启 pin_model），先把实测的 CLI 上报值填进 model_aliases：请求名与供应商名不同时，没有别名会判 reported_mismatch 并阻断。依据：尚未验证。"
+    }
+  },
+  "routing": {
+    "schema_version": 1,
+    "mode": "auto",
+    "allowed_profiles": ["cb-primary", "cb-review"],
+    "rules": [
+      {
+        "task_type": "review",
+        "prefer": ["cb-review", "cb-primary"]
+      },
+      {
+        "task_type": "bugfix",
+        "prefer": ["cb-primary"]
+      }
+    ],
+    "fallback": "default_profile",
+    "max_assignments": 2,
+    "cost_ceiling": "premium"
+  },
+  "authorization_ref": "REPLACE_WITH_REAL_SCOPE",
+  "authorized_actions": ["create", "execute"],
+  "allowed_paths": ["src", "tests"],
+  "protected_paths": [".env", ".github"],
+  "checks": [
+    {
+      "id": "unit",
+      "argv": ["pnpm", "exec", "vitest", "run"]
+    }
+  ],
+  "max_active_tasks": 1,
+  "max_attempts": 3,
+  "timeout_seconds": 3600
+}

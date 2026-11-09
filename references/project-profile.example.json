@@ -1,0 +1,42 @@
+{
+  "schema_version": 2,
+  "project_id": "example",
+  "repo": "/absolute/path/to/repo",
+  "base_ref": "HEAD",
+  "backend": "local-process",
+  "network": "none",
+  "default_agent_profile": "cb-edits",
+  "agent_profiles": {
+    "cb-edits": {
+      "adapter": "codebuddy",
+      "backend": "codebuddy-cli",
+      "expected_version": "REPLACE_WITH_EXACT_CLI_VERSION",
+      "permission_profile": "isolated-edit",
+      "require_permission_binding": true,
+      "credential_refs": ["model-codebuddy"],
+      "network_profile": "none",
+      "model": "REPLACE_WITH_VERIFIED_MODEL_ID",
+      "cost_class": "standard",
+      "description": "用途：修改集中、由控制器 checks 自测的任务。依据：尚未验证。"
+    }
+  },
+  "routing": {
+    "schema_version": 1,
+    "mode": "explicit",
+    "allowed_profiles": ["cb-edits"],
+    "fallback": "default_profile"
+  },
+  "authorization_ref": "REPLACE_WITH_REAL_SCOPE",
+  "authorized_actions": ["create", "execute"],
+  "allowed_paths": ["src", "tests"],
+  "protected_paths": [".env", ".github"],
+  "checks": [
+    {
+      "id": "unit",
+      "argv": ["pnpm", "exec", "vitest", "run"]
+    }
+  ],
+  "max_active_tasks": 1,
+  "max_attempts": 3,
+  "timeout_seconds": 3600
+}

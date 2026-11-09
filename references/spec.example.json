@@ -1,0 +1,62 @@
+{
+  "schema_version": 3,
+  "title": "<FILL:一句话说明这次要交付什么>",
+  "allowed_paths": [
+    "<FILL:必须修改的文件，写到文件级，例如 internal/app/publish_flow.go>",
+    "<FILL:允许新增的文件，例如 internal/app/publish_flow_test.go>",
+    "<FILL:progress_refs 指向的需求文档，必须写在这里，例如 docs/plan.md>"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "AC-1",
+      "statement": "<FILL:证伪式条件——改动没做时这条一定失败，例如 ac-r10-golden 在 base_sha 上退出码非 0>",
+      "verification": {
+        "type": "check",
+        "check_id": "<FILL:项目批准的 check id，例如 unit>"
+      }
+    },
+    {
+      "id": "AC-2",
+      "statement": "<FILL:业务闭环里机器判不了的那一半>",
+      "verification": {
+        "type": "manual",
+        "judge": "independent",
+        "supporting_checks": [
+          "<FILL:为这条提供机器证据的 check id（项目已批准，不能内联 shell）>"
+        ],
+        "instructions": "<FILL:谁判、看哪条证据、什么算通过>"
+      }
+    }
+  ],
+  "acceptance_review": {
+    "required": true,
+    "mode": "either",
+    "independent": true
+  },
+  "decisions": [
+    {
+      "id": "D-1",
+      "question": "<FILL:冲突点，一句话>",
+      "options": [
+        "<FILL:选项 A>",
+        "<FILL:选项 B>"
+      ],
+      "recommendation": "<FILL:建议结论 + 一句理由；没有建议写 null>",
+      "impact_if_wrong": "<FILL:判错会推翻什么>",
+      "status": "open",
+      "resolved_by": null,
+      "resolution": null
+    }
+  ],
+  "depends_on": [
+    "<FILL:上游需求 marker（start 时要求它 DONE+accepted+判定满足），例如 R-10；没有依赖就删掉这个键>"
+  ],
+  "progress_refs": [
+    {
+      "acceptance_id": "AC-2",
+      "doc": "<FILL:需求文档仓库相对路径，必须在 allowed_paths 内>",
+      "marker": "<FILL:该文档里的稳定标记，例如 R-14>"
+    }
+  ],
+  "open_questions": []
+}
